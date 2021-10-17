@@ -1,0 +1,128 @@
+Задание: 1 (Serge I: 2002-09-30)
+Найдите номер модели, скорость и размер жесткого диска для всех ПК стоимостью менее 500 дол. Вывести: model, speed и hd
+____
+SELECT model, speed, hd
+FROM PC 
+WHERE price < 500
+
+Задание: 2 (Serge I: 2002-09-21)
+Найдите производителей принтеров. Вывести: maker
+____
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'Printer'
+
+Задание: 3 (Serge I: 2002-09-30)
+Найдите номер модели, объем памяти и размеры экранов ПК-блокнотов, цена которых превышает 1000 дол.
+____
+SELECT model, ram, screen
+FROM Laptop
+WHERE price > 1000
+
+Задание: 4 (Serge I: 2002-09-21)
+Найдите все записи таблицы Printer для цветных принтеров.
+____
+SELECT code, model, color, type, price
+FROM Printer
+WHERE color = 'y'
+
+Задание: 5 (Serge I: 2002-09-30)
+Найдите номер модели, скорость и размер жесткого диска ПК, имеющих 12x или 24x CD и цену менее 600 дол.
+____
+SELECT DISTINCT model, speed, hd
+FROM PC
+WHERE (cd = '12x' or cd = '24x') AND price < 600
+
+Задание: 6 (Serge I: 2002-10-28)
+Для каждого производителя, выпускающего ПК-блокноты c объёмом жесткого диска не менее 10 Гбайт, найти скорости таких ПК-блокнотов. Вывод: производитель, скорость.
+____
+SELECT DISTINCT Product.maker, Laptop.speed
+FROM Product INNER JOIN
+Laptop ON Product.model = Laptop.model
+WHERE Laptop.hd >= 10
+
+Задание: 7 (Serge I: 2002-11-02)
+Найдите номера моделей и цены всех имеющихся в продаже продуктов (любого типа) производителя B (латинская буква).
+____
+SELECT DISTINCT Product.model, price
+FROM Product
+INNER JOIN PC ON Product.model = PC.model
+WHERE maker = 'B'
+UNION
+SELECT DISTINCT Product.model, price
+FROM Product
+INNER JOIN Laptop ON Product.model = Laptop.model
+WHERE maker = 'B'
+UNION
+SELECT DISTINCT Product.model, price
+FROM Product
+INNER JOIN Printer ON Product.model = Printer.model
+WHERE maker = 'B'
+
+Задание: 8 (Serge I: 2003-02-03)
+Найдите производителя, выпускающего ПК, но не ПК-блокноты.
+____
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'PC'
+EXCEPT
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'laptop'
+
+Задание: 9 (Serge I: 2002-11-02)
+Найдите производителей ПК с процессором не менее 450 Мгц. Вывести: Maker
+____
+SELECT DISTINCT Maker
+FROM Product
+INNER JOIN PC ON Product.model = PC.model
+WHERE speed >= 450
+
+Задание: 10 (Serge I: 2002-09-23)
+Найдите модели принтеров, имеющих самую высокую цену. Вывести: model, price
+____
+SELECT model, price
+FROM Printer
+WHERE price =
+(SELECT MAX(price)
+FROM Printer)
+
+Задание: 11 (Serge I: 2002-11-02)
+Найдите среднюю скорость ПК.
+____
+SELECT AVG(speed) AS Avg_speed
+FROM PC
+
+Задание: 12 (Serge I: 2002-11-02)
+Найдите среднюю скорость ПК-блокнотов, цена которых превышает 1000 дол.
+____
+SELECT AVG(speed) AS Avg_speed
+FROM Laptop
+WHERE price > 1000
+
+Задание: 13 (Serge I: 2002-11-02)
+Найдите среднюю скорость ПК, выпущенных производителем A.
+____
+SELECT AVG(speed) AS Avg_speed
+FROM PC
+INNER JOIN Product ON PC.model = Product.model
+WHERE maker = 'A'
+
+Задание: 14 (Serge I: 2002-11-05)
+Найдите класс, имя и страну для кораблей из таблицы Ships, имеющих не менее 10 орудий.
+____
+SELECT Ships.class, name, country
+FROM Ships
+INNER JOIN Classes ON Ships.class = Classes.class
+WHERE numGuns >= 10
+
+Задание: 15 (Serge I: 2003-02-03)
+Найдите размеры жестких дисков, совпадающих у двух и более PC. Вывести: HD
+____
+SELECT hd
+FROM PC
+GROUP BY hd
+HAVING COUNT(hd) >= 2
+
+
+
